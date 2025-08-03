@@ -30,11 +30,10 @@ export function NavMain({
 }) {
     return (
         <SidebarGroup>
-            <SidebarGroupLabel>Platform</SidebarGroupLabel>
+            <SidebarGroupLabel>General</SidebarGroupLabel>
             <SidebarMenu>
                 {items.map((item) =>
                     item.items && item.items.length > 0 ? (
-                        // 🔽 Yang PUNYA sub-items → render collapsible
                         <Collapsible
                             key={item.title}
                             asChild
@@ -65,7 +64,6 @@ export function NavMain({
                             </SidebarMenuItem>
                         </Collapsible>
                     ) : (
-                        // ➡️ Yang GAK punya sub-items → render biasa
                         <SidebarMenuItem key={item.title}>
                             <SidebarMenuButton asChild tooltip={item.title}>
                                 <a href={item.url} className="flex items-center gap-2 w-full">

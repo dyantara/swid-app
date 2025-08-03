@@ -1,17 +1,15 @@
 import * as React from "react";
 import {
-    Bot,
-    Frame,
     GalleryVerticalEnd,
-    Map,
-    PieChart,
-    SquareTerminal,
     LayoutDashboard,
+    BookText,
+    FileText,
+    Users,
+    Settings,
+    MessageCircle,
 } from "lucide-react";
 
-
 import { NavMain } from "@/components/layout/sidebar/nav-main";
-import { NavProjects } from "@/components/layout/sidebar/nav-projects";
 import { NavUser } from "@/components/layout/sidebar/nav-user";
 import { TeamSwitcher } from "@/components/layout/sidebar/team-switcher";
 import {
@@ -39,46 +37,45 @@ const data = {
     navMain: [
         {
             title: "Dashboard",
-            url: "#",
+            url: "/dashboard",
             icon: LayoutDashboard,
         },
         {
             title: "Story",
             url: "#",
-            icon: SquareTerminal,
+            icon: BookText,
             items: [
                 {
-                    title: "History",
-                    url: "#",
+                    title: "Story Data",
+                    url: "/dashboard/story",
                 },
                 {
-                    title: "Starred",
-                    url: "#",
-                },
-                {
-                    title: "Settings",
-                    url: "#",
+                    title: "Story Category",
+                    url: "/dashboard/story-category",
                 },
             ],
         },
+        {
+            title: "Artikel",
+            url: "/dashboard/artikel",
+            icon: FileText,
+        },
+        {
+            title: "Chat",
+            url: "/dashboard/chat",
+            icon: MessageCircle,
+        },
+        {
+            title: "Users",
+            url: "/dashboard/users",
+            icon: Users,
+        },
+        {
+            title: "Settings",
+            url: "/dashboard/settings",
+            icon: Settings,
+        },
     ],
-    // projects: [
-    //     {
-    //         name: "Design Engineering",
-    //         url: "#",
-    //         icon: Frame,
-    //     },
-    //     {
-    //         name: "Sales & Marketing",
-    //         url: "#",
-    //         icon: PieChart,
-    //     },
-    //     {
-    //         name: "Travel",
-    //         url: "#",
-    //         icon: Map,
-    //     },
-    // ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -89,7 +86,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             </SidebarHeader>
             <SidebarContent>
                 <NavMain items={data.navMain} />
-                {/* <NavProjects projects={data.projects} /> */}
             </SidebarContent>
             <SidebarFooter>
                 <NavUser user={data.user} />

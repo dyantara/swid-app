@@ -77,21 +77,21 @@
     --sidebar-ring: hsl(217.2 91.2% 59.8%);
 }
 
-@theme inline {
+@theme {
+
     --font-sans: "Poppins", sans-serif;
     /* --font-inter: "Inter", "sans-serif"; */
     /* --font-manrope: "Manrope", "sans-serif"; */
 
-    --primary: #2371AF;
-    --primary-100: #C0D6EB;
-    --primary-200: #78A7D2;
-    --primary-300: #174D79;
+    --color-primary-0: #2371af;
+    --color-primary-100: #c0d6eb;
+    --color-primary-200: #78a7d2;
+    --color-primary-300: #174d79;
 
-    --secondary: #AF6F23;
-    --secondary-100: #F2D4B1;
-    --secondary-200: #E3B67D;
-    --secondary-300: #B66B1F;
-
+    --color-secondary: #af6f23;
+    --color-secondary-100: #f2d4b1;
+    --color-secondary-200: #e3b67d;
+    --color-secondary-300: #b66b1f;
 
     --radius-sm: calc(var(--radius) - 4px);
     --radius-md: calc(var(--radius) - 2px);

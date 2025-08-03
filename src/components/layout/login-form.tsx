@@ -44,7 +44,7 @@ export function LoginForm({
                                   required
                               />
                           </div>
-                          <Button type="submit" className="w-full bg-primary hover:bg-primary-100">
+                          <Button type="submit" className="w-full bg-primary-0 hover:bg-primary-100">
                               Login
                           </Button>
                           {/* <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">

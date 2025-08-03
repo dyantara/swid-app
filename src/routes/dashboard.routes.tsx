@@ -3,7 +3,7 @@ import DashboardPage from "@/pages/dashboard/page";
 import LayoutDashboard from "@/components/layout/layout-dashboard";
 
 export const dashboardRoutes: RouteObject = {
-    path: "/",
+    path: "/dashboard",
     element: <LayoutDashboard />,
     children: [
         {
