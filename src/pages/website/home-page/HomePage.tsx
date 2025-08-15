@@ -1,6 +1,6 @@
 function HomePage() {
     return (
-        <div className="container mx-auto">
+        <div className="container mx-auto space-y-4">
             <section
                 id="home"
                 className="flex flex-col md:flex-row items-center justify-between  p-8 gap-8"
@@ -21,7 +21,7 @@ function HomePage() {
                         ruang aman untuk bercerita, memahami diri, dan bertumbuh bersama.
                     </p>
                     <a
-                        href="#about"
+                        href="login"
                         className="inline-block bg-primary-0 text-white px-6 py-3 rounded hover:bg-primary-200 transition"
                     >
                         Mulai Perjalananmu
@@ -53,11 +53,7 @@ function HomePage() {
                     <div className="flex gap-4 overflow-x-auto p-4">
                         {/* Card 1 */}
                         <div className="min-w-[280px] max-w-[280px] bg-white rounded-lg shadow p-4 flex-shrink-0 overflow-hidden">
-                            <img
-                                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
-                                alt="Cerita 1"
-                                className="w-full h-40 object-cover rounded mb-4"
-                            />
+                            <div className="h-40 bg-gray-200 rounded mb-4"></div>
                             <h2 className="text-md font-semibold text-blue-800 mb-2">
                                 Menghadapi Rasa Takut Saat Berbicara di Depan Umum
                             </h2>
@@ -75,11 +71,7 @@ function HomePage() {
 
                         {/* Card 2 */}
                         <div className="min-w-[280px] max-w-[280px] bg-white rounded-lg shadow p-4 flex-shrink-0 overflow-hidden">
-                            <img
-                                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
-                                alt="Cerita 2"
-                                className="w-full h-40 object-cover rounded mb-4"
-                            />
+                            <div className="h-40 bg-gray-200 rounded mb-4"></div>
                             <h2 className="text-md font-semibold text-blue-800 mb-2">
                                 Overthinking dan Cara Aku Melawannya
                             </h2>
@@ -97,11 +89,7 @@ function HomePage() {
 
                         {/* Card 3 */}
                         <div className="min-w-[280px] max-w-[280px] bg-white rounded-lg shadow p-4 flex-shrink-0 overflow-hidden">
-                            <img
-                                src="/assets/story3.jpg"
-                                alt="Cerita 3"
-                                className="w-full h-40 object-cover rounded mb-4"
-                            />
+                            <div className="h-40 bg-gray-200 rounded mb-4"></div>
                             <h2 className="text-md font-semibold text-blue-800 mb-2">
                                 Ketika Burnout Mengubah Cara Pandangku
                             </h2>
@@ -118,11 +106,7 @@ function HomePage() {
                         </div>
 
                         <div className="min-w-[280px] max-w-[280px] bg-white rounded-lg shadow p-4 flex-shrink-0 overflow-hidden">
-                            <img
-                                src="/assets/story3.jpg"
-                                alt="Cerita 3"
-                                className="w-full h-40 object-cover rounded mb-4"
-                            />
+                            <div className="h-40 bg-gray-200 rounded mb-4"></div>
                             <h2 className="text-md font-semibold text-blue-800 mb-2">
                                 Ketika Burnout Mengubah Cara Pandangku
                             </h2>
@@ -139,11 +123,7 @@ function HomePage() {
                         </div>
 
                         <div className="min-w-[280px] max-w-[280px] bg-white rounded-lg shadow p-4 flex-shrink-0 overflow-hidden">
-                            <img
-                                src="/assets/story3.jpg"
-                                alt="Cerita 3"
-                                className="w-full h-40 object-cover rounded mb-4"
-                            />
+                            <div className="h-40 bg-gray-200 rounded mb-4"></div>
                             <h2 className="text-md font-semibold text-blue-800 mb-2">
                                 Ketika Burnout Mengubah Cara Pandangku
                             </h2>
@@ -160,11 +140,7 @@ function HomePage() {
                         </div>
 
                         <div className="min-w-[280px] max-w-[280px] bg-white rounded-lg shadow p-4 flex-shrink-0 overflow-hidden">
-                            <img
-                                src="/assets/story3.jpg"
-                                alt="Cerita 3"
-                                className="w-full h-40 object-cover rounded mb-4"
-                            />
+                            <div className="h-40 bg-gray-200 rounded mb-4"></div>
                             <h2 className="text-md font-semibold text-blue-800 mb-2">
                                 Ketika Burnout Mengubah Cara Pandangku
                             </h2>
@@ -182,125 +158,78 @@ function HomePage() {
                     </div>
                 </div>
             </section>
-            <section id="about" className="bg-blue-100 py-16 px-8 my-8 mx-8 rounded-xl">
-                <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-                    {/* Placeholder / Future Illustration */}
-                    <div className="w-full h-[300px] bg-white rounded-lg shadow flex items-center justify-center">
-                        <span className="text-gray-400">[Ilustrasi nanti di sini]</span>
+            <section id="articles" className="">
+                <div className="p-8 ">
+                    <div className="flex justify-between items-center mb-8">
+                        <div>
+                            <h2 className="text-4xl font-bold text-primary-0 ">
+                                Artikel & Insight
+                            </h2>
+                            <p className="text-gray-600">
+                                Temukan wawasan baru tentang kesehatan mental, self-care, dan
+                                kehidupan.
+                            </p>
+                        </div>
+
+                        <div className="">
+                            <a
+                                href="/artikel"
+                                className="px-6 py-3 bg-primary-0 text-white rounded-lg shadow hover:bg-primary-1 transition-colors"
+                            >
+                                Lihat Semua Artikel
+                            </a>
+                        </div>
                     </div>
-                    {/* Text Section */}
-                    <div>
-                        <h2 className="text-4xl font-bold text-primary-0 mb-6">Apa Itu SWID?</h2>
-                        <p className="text-gray-700 text-lg mb-6">
-                            <strong>SWID (Sahabat Wellbeing Indonesia)</strong> adalah komunitas
-                            support yang mendukung kamu menghadapi isu kesehatan mental seperti
-                            kecemasan sosial, burnout, dan overthinking. Di sini, kamu bisa
-                            bercerita tanpa takut dihakimi, mendapatkan edukasi, dan tumbuh bersama.
-                        </p>
-                        <a
-                            href="/tentang-kami"
-                            className="inline-block bg-primary-0 text-white px-6 py-3 rounded hover:bg-primary-200 transition"
-                        >
-                            Selengkapnya
-                        </a>
+
+                    <div className="flex gap-4 overflow-x-auto flex-nowrap no-scrollbar pb-8">
+                        {[
+                            {
+                                title: "Mengenal Emosi: Kenapa Kita Perlu Merasakannya?",
+                                desc: "Emosi bukan musuhmu. Kenali mereka agar kamu bisa berdamai dengan dirimu sendiri.",
+                            },
+                            {
+                                title: "5 Cara Self-Care Saat Lagi Burnout",
+                                desc: "Burnout itu nyata. Tapi kamu bisa belajar menenangkan diri dengan langkah kecil.",
+                            },
+                            {
+                                title: "Mengapa Cerita Itu Menyembuhkan?",
+                                desc: "Berbagi cerita bukan hanya menolong orang lain, tapi juga menyembuhkan dirimu.",
+                            },
+                            {
+                                title: "Tips Mengelola Stres Sehari-hari",
+                                desc: "Stres itu wajar, tapi kamu bisa mengelolanya agar tetap produktif dan tenang.",
+                            },
+                            {
+                                title: "Belajar Memahami Diri Sendiri",
+                                desc: "Pahami dirimu agar kamu bisa mengambil keputusan yang lebih baik dalam hidup.",
+                            },
+                            {
+                                title: "Menemukan Arti Hidup",
+                                desc: "Kadang hidup terasa kosong, tapi ada cara untuk menemukan maknanya lagi.",
+                            },
+                        ].map((article, index) => (
+                            <div
+                                key={index}
+                                className="bg-white rounded-xl shadow p-4 text-left hover:shadow-lg transition-shadow duration-300 min-w-[300px] max-w-[300px]"
+                            >
+                                <div className="h-40 bg-gray-200 rounded mb-4"></div>
+                                <h3 className="text-lg font-semibold">{article.title}</h3>
+                                <p className="text-gray-600 text-sm my-2">{article.desc}</p>
+                                <button className="text-primary-0 font-semibold mt-2">
+                                    Baca Selengkapnya →
+                                </button>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </section>
-            <section id="articles" className="py-16 px-8 my-8 mx-8">
-                <div className="max-w-7xl mx-auto text-center">
-                    <h2 className="text-4xl font-bold text-primary-0 mb-4">Artikel & Insight</h2>
-                    <p className="text-gray-600 mb-10">
-                        Temukan wawasan baru tentang kesehatan mental, self-care, dan kehidupan.
-                    </p>
-
-                    <div className="grid md:grid-cols-3 gap-6">
-                        {/* Card 1 */}
-                        <div className="bg-white rounded-xl shadow p-4 text-left">
-                            <div className="h-40 bg-gray-200 rounded mb-4"></div>
-                            <h3 className="text-lg font-semibold">
-                                Mengenal Emosi: Kenapa Kita Perlu Merasakannya?
-                            </h3>
-                            <p className="text-gray-600 text-sm my-2">
-                                Emosi bukan musuhmu. Kenali mereka agar kamu bisa berdamai dengan
-                                dirimu sendiri.
-                            </p>
-                            <button className="text-primary-0 font-semibold mt-2">
-                                Baca Selengkapnya →
-                            </button>
-                        </div>
-
-                        {/* Card 2 */}
-                        <div className="bg-white rounded-xl shadow p-4 text-left">
-                            <div className="h-40 bg-gray-200 rounded mb-4"></div>
-                            <h3 className="text-lg font-semibold">
-                                5 Cara Self-Care Saat Lagi Burnout
-                            </h3>
-                            <p className="text-gray-600 text-sm my-2">
-                                Burnout itu nyata. Tapi kamu bisa belajar menenangkan diri dengan
-                                langkah kecil.
-                            </p>
-                            <button className="text-primary-0 font-semibold mt-2">
-                                Baca Selengkapnya →
-                            </button>
-                        </div>
-
-                        {/* Card 3 */}
-                        <div className="bg-white rounded-xl shadow p-4 text-left">
-                            <div className="h-40 bg-gray-200 rounded mb-4"></div>
-                            <h3 className="text-lg font-semibold">
-                                Mengapa Cerita Itu Menyembuhkan?
-                            </h3>
-                            <p className="text-gray-600 text-sm my-2">
-                                Berbagi cerita bukan hanya menolong orang lain, tapi juga
-                                menyembuhkan dirimu.
-                            </p>
-                            <button className="text-primary-0 font-semibold mt-2">
-                                Baca Selengkapnya →
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="problems" className="bg-white py-16 px-8 my-8 mx-8">
-                <div className="max-w-7xl mx-auto text-center">
-                    <h2 className="text-4xl font-bold text-primary-0 mb-10">
-                        Kami Hadir Untuk Kamu yang...
-                    </h2>
-                    <div className="grid md:grid-cols-3 gap-8">
-                        <div className="bg-blue-50 p-6 rounded-xl shadow">
-                            <h3 className="text-xl font-semibold text-primary-0 mb-2">
-                                Sering overthinking
-                            </h3>
-                            <p className="text-gray-600">
-                                Khawatir berlebihan sampai susah tidur atau gak bisa fokus.
-                            </p>
-                        </div>
-                        <div className="bg-blue-50 p-6 rounded-xl shadow">
-                            <h3 className="text-xl font-semibold text-primary-0 mb-2">
-                                Kecemasan sosial
-                            </h3>
-                            <p className="text-gray-600">
-                                Takut untuk speak up, takut dinilai negatif, atau sulit berteman.
-                            </p>
-                        </div>
-                        <div className="bg-blue-50 p-6 rounded-xl shadow">
-                            <h3 className="text-xl font-semibold text-primary-0 mb-2">
-                                Burnout kerja/kuliah
-                            </h3>
-                            <p className="text-gray-600">
-                                Merasa capek terus, kehilangan motivasi, dan merasa gak cukup.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <section id="features" className="bg-gray-50 py-16 px-8 my-8 mx-8">
+            <section id="features" className="bg-gray-50 py-16 px-8 mx-8 rounded-lg">
                 <div className="max-w-7xl mx-auto text-center">
                     <h2 className="text-4xl font-bold text-primary-0 mb-10">
                         Apa yang Bisa Kamu Lakukan di SWID?
                     </h2>
                     <div className="grid md:grid-cols-2 gap-10 text-left">
+                        {/* Baca Cerita Sahabat */}
                         <div className="flex items-start space-x-4">
                             <div className="text-primary-0 text-3xl">📖</div>
                             <div>
@@ -312,6 +241,19 @@ function HomePage() {
                             </div>
                         </div>
 
+                        {/* Berbagi Cerita */}
+                        <div className="flex items-start space-x-4">
+                            <div className="text-primary-0 text-3xl">🗣️</div>
+                            <div>
+                                <h3 className="text-xl font-semibold mb-1">Berbagi Cerita</h3>
+                                <p className="text-gray-600">
+                                    Ceritakan pengalamanmu, jadilah inspirasi, dan bantu orang lain
+                                    merasa tidak sendirian.
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Edukasi Kesehatan Mental */}
                         <div className="flex items-start space-x-4">
                             <div className="text-primary-0 text-3xl">📚</div>
                             <div>
@@ -319,30 +261,20 @@ function HomePage() {
                                     Edukasi Kesehatan Mental
                                 </h3>
                                 <p className="text-gray-600">
-                                    Pelajari dasar-dasar self-care, emosi, dan mental health dari
+                                    Pelajari dasar-dasar self-care, emosi, dan kesehatan mental dari
                                     sumber terpercaya.
                                 </p>
                             </div>
                         </div>
 
+                        {/* Konsultasi */}
                         <div className="flex items-start space-x-4">
-                            <div className="text-primary-0 text-3xl">🗣️</div>
+                            <div className="text-primary-0 text-3xl">💬</div>
                             <div>
-                                <h3 className="text-xl font-semibold mb-1">Berbagi Ceritamu</h3>
+                                <h3 className="text-xl font-semibold mb-1">Konsultasi</h3>
                                 <p className="text-gray-600">
-                                    Ingin didengar? Ceritakan pengalamanmu dan bantu orang lain
-                                    merasa tidak sendirian.
-                                </p>
-                            </div>
-                        </div>
-
-                        <div className="flex items-start space-x-4">
-                            <div className="text-primary-0 text-3xl">✍️</div>
-                            <div>
-                                <h3 className="text-xl font-semibold mb-1">Jurnal Harian</h3>
-                                <p className="text-gray-600">
-                                    Tulis pikiran dan perasaanmu setiap hari untuk melacak
-                                    perkembangan emosimu.
+                                    Dapatkan ruang aman untuk berbicara dengan konselor atau
+                                    pendamping yang siap mendengarkan.
                                 </p>
                             </div>
                         </div>
