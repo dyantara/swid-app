@@ -1,5 +1,3 @@
-import React from "react";
-
 function AboutusPage() {
     return (
         <div className="container mx-auto space-y-4 mt-10">
