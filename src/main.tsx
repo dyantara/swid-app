@@ -5,13 +5,19 @@ import App from "./App.tsx";
 import { ThemeProvider } from "./context/theme-context";
 import { FontProvider } from "./context/font-context";
 import { Toaster } from "sonner";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+// bikin instance client react-query
+const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
         <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
             <FontProvider>
-                <App />
-                <Toaster richColors position="top-right" />
+                <QueryClientProvider client={queryClient}>
+                    <App />
+                    <Toaster richColors position="top-right" />
+                </QueryClientProvider>
             </FontProvider>
         </ThemeProvider>
     </StrictMode>

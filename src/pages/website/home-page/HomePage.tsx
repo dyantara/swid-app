@@ -1,4 +1,10 @@
+import { useApprovedStories } from "@/hooks/useStories";
+import { Link } from "react-router-dom";
+
 function HomePage() {
+    const { data: stories } = useApprovedStories();
+
+
     return (
         <div className="container mx-auto space-y-4">
             <section
@@ -44,117 +50,49 @@ function HomePage() {
                             Baca berbagai kisah nyata dari mereka yang berjuang dan bertumbuh
                             bersama SWID.
                         </p>
-                        <a href="#" className="text-white px-4 py-2 w-52 bg-primary-0 rounded">
+                        <Link
+                            to="/story"
+                            className="text-white px-4 py-2 w-52 bg-primary-0 rounded hover:bg-primary-200 transition"
+                        >
                             Lihat Semua Cerita →
-                        </a>
+                        </Link>
                     </div>
 
                     {/* Scrollable Cards */}
                     <div className="flex gap-4 overflow-x-auto p-4">
-                        {/* Card 1 */}
-                        <div className="min-w-[280px] max-w-[280px] bg-white rounded-lg shadow p-4 flex-shrink-0 overflow-hidden">
-                            <div className="h-40 bg-gray-200 rounded mb-4"></div>
-                            <h2 className="text-md font-semibold text-blue-800 mb-2">
-                                Menghadapi Rasa Takut Saat Berbicara di Depan Umum
-                            </h2>
-                            <p className="text-gray-600 text-sm mb-3">
-                                Dulu aku selalu gemetar saat diminta bicara. Tapi kini, aku mulai
-                                menemukan caraku sendiri.
-                            </p>
-                            <a
-                                href="#"
-                                className="text-blue-600 text-sm font-medium hover:underline"
-                            >
-                                Baca Selengkapnya →
-                            </a>
-                        </div>
-
-                        {/* Card 2 */}
-                        <div className="min-w-[280px] max-w-[280px] bg-white rounded-lg shadow p-4 flex-shrink-0 overflow-hidden">
-                            <div className="h-40 bg-gray-200 rounded mb-4"></div>
-                            <h2 className="text-md font-semibold text-blue-800 mb-2">
-                                Overthinking dan Cara Aku Melawannya
-                            </h2>
-                            <p className="text-gray-600 text-sm mb-3">
-                                Pikiran yang terus berputar bikin aku lelah. Tapi perlahan, aku
-                                belajar menenangkan diriku.
-                            </p>
-                            <a
-                                href="#"
-                                className="text-blue-600 text-sm font-medium hover:underline"
-                            >
-                                Baca Selengkapnya →
-                            </a>
-                        </div>
-
-                        {/* Card 3 */}
-                        <div className="min-w-[280px] max-w-[280px] bg-white rounded-lg shadow p-4 flex-shrink-0 overflow-hidden">
-                            <div className="h-40 bg-gray-200 rounded mb-4"></div>
-                            <h2 className="text-md font-semibold text-blue-800 mb-2">
-                                Ketika Burnout Mengubah Cara Pandangku
-                            </h2>
-                            <p className="text-gray-600 text-sm mb-3">
-                                Aku sempat merasa hampa dan kehilangan arah. Tapi itu jadi titik
-                                balik untuk mengenal diri.
-                            </p>
-                            <a
-                                href="#"
-                                className="text-blue-600 text-sm font-medium hover:underline"
-                            >
-                                Baca Selengkapnya →
-                            </a>
-                        </div>
-
-                        <div className="min-w-[280px] max-w-[280px] bg-white rounded-lg shadow p-4 flex-shrink-0 overflow-hidden">
-                            <div className="h-40 bg-gray-200 rounded mb-4"></div>
-                            <h2 className="text-md font-semibold text-blue-800 mb-2">
-                                Ketika Burnout Mengubah Cara Pandangku
-                            </h2>
-                            <p className="text-gray-600 text-sm mb-3">
-                                Aku sempat merasa hampa dan kehilangan arah. Tapi itu jadi titik
-                                balik untuk mengenal diri.
-                            </p>
-                            <a
-                                href="#"
-                                className="text-blue-600 text-sm font-medium hover:underline"
-                            >
-                                Baca Selengkapnya →
-                            </a>
-                        </div>
-
-                        <div className="min-w-[280px] max-w-[280px] bg-white rounded-lg shadow p-4 flex-shrink-0 overflow-hidden">
-                            <div className="h-40 bg-gray-200 rounded mb-4"></div>
-                            <h2 className="text-md font-semibold text-blue-800 mb-2">
-                                Ketika Burnout Mengubah Cara Pandangku
-                            </h2>
-                            <p className="text-gray-600 text-sm mb-3">
-                                Aku sempat merasa hampa dan kehilangan arah. Tapi itu jadi titik
-                                balik untuk mengenal diri.
-                            </p>
-                            <a
-                                href="#"
-                                className="text-blue-600 text-sm font-medium hover:underline"
-                            >
-                                Baca Selengkapnya →
-                            </a>
-                        </div>
-
-                        <div className="min-w-[280px] max-w-[280px] bg-white rounded-lg shadow p-4 flex-shrink-0 overflow-hidden">
-                            <div className="h-40 bg-gray-200 rounded mb-4"></div>
-                            <h2 className="text-md font-semibold text-blue-800 mb-2">
-                                Ketika Burnout Mengubah Cara Pandangku
-                            </h2>
-                            <p className="text-gray-600 text-sm mb-3">
-                                Aku sempat merasa hampa dan kehilangan arah. Tapi itu jadi titik
-                                balik untuk mengenal diri.
-                            </p>
-                            <a
-                                href="#"
-                                className="text-blue-600 text-sm font-medium hover:underline"
-                            >
-                                Baca Selengkapnya →
-                            </a>
-                        </div>
+                        {stories
+                            ?.sort(
+                                (a, b) =>
+                                    new Date(b.createdAt).getTime() -
+                                    new Date(a.createdAt).getTime()
+                            ) // urut terbaru
+                            .slice(0, 12) // ambil 12 pertama
+                            .map((story) => (
+                                <div
+                                    key={story._id}
+                                    className="min-w-[280px] max-w-[280px] bg-white rounded-lg shadow p-4 flex-shrink-0 overflow-hidden"
+                                >
+                                    <div className="h-40 bg-gray-200 rounded mb-4 overflow-hidden">
+                                        <img
+                                            src={story.image}
+                                            alt={story.title}
+                                            className="w-full h-full object-cover"
+                                        />
+                                    </div>
+                                    <h2 className="text-md font-semibold text-blue-800 mb-2 line-clamp-2">
+                                        {story.title}
+                                    </h2>
+                                    <p className="text-gray-600 text-sm mb-3 line-clamp-3">
+                                        {story.content}
+                                    </p>
+                                    <Link
+                                        to={`/story/${story._id}`}
+                                        className="text-blue-600 text-sm font-medium hover:underline"
+                                    >
+                                        Baca Selengkapnya →
+                                    </Link>
+                                </div>
+                            ))}
                     </div>
                 </div>
             </section>
