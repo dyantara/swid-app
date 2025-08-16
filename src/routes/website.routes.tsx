@@ -3,6 +3,9 @@ import ComingSoon from "@/pages/others/ComingSoon";
 import AboutusPage from "@/pages/website/aboutus-page/AboutusPage";
 import HomePage from "@/pages/website/home-page/HomePage";
 import type { RouteObject } from "react-router-dom";
+import NewsPage from "@/pages/website/news-page/NewsPage";
+import StoryPage from "@/pages/website/story-page/StoryPage";
+
 
 export const webRoutes: RouteObject = {
     path: "/",
@@ -18,15 +21,15 @@ export const webRoutes: RouteObject = {
         },
         {
             path: "story",
-            element: <ComingSoon />,
+            element: <StoryPage />,
         },
         {
-            path: "article",
-            element: <ComingSoon />,
+            path: "news",
+            element: <NewsPage />,
         },
         {
             path: "contact-us",
             element: <ComingSoon />,
-        }
+        },
     ],
 };

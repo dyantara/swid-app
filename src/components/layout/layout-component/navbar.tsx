@@ -6,10 +6,23 @@ import { useLocation, Link, useNavigate } from "react-router-dom";
 const navigation = [
     { name: "Home", href: "/" },
     { name: "Story", href: "/story" },
-    { name: "Article", href: "/article" },
+    { name: "News", href: "/news" },
     { name: "About Us", href: "/about-us" },
     { name: "Contact Us", href: "/contact-us" },
 ];
+
+// Fungsi decode JWT tanpa library
+const decodeToken = (token: string) => {
+    try {
+        const parts = token.split(".");
+        if (parts.length !== 3) return null;
+        const decodedPayload = atob(parts[1]);
+        return JSON.parse(decodedPayload);
+    } catch (err) {
+        console.error("Failed to decode token", err);
+        return null;
+    }
+};
 
 function Navbar() {
     const location = useLocation();
@@ -17,22 +30,42 @@ function Navbar() {
     const [mobileOpen, setMobileOpen] = useState(false);
     const [profileOpen, setProfileOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
+    const [token, setToken] = useState<string | null>(null);
+    const [role, setRole] = useState<string | null>(null);
 
-    // Simulasi login
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+    // Ambil token dari localStorage dan decode role
     useEffect(() => {
-        const handleScroll = () => {
-            setScrolled(window.scrollY > 10);
-        };
+        const storedToken = localStorage.getItem("token");
+        setToken(storedToken);
+
+        if (storedToken) {
+            const payload = decodeToken(storedToken);
+            setRole(payload?.role || null);
+        }
+    }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        setToken(null);
+        setRole(null);
+        navigate("/login");
+    };
+
+    // Scroll effect
+    useEffect(() => {
+        const handleScroll = () => setScrolled(window.scrollY > 10);
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
     return (
         <nav
-            className={`transition-all duration-300 z-50 w-full 
-            ${scrolled ? "fixed top-0 bg-white/70 backdrop-blur-md shadow" : "absolute bg-transparent"}`}
+            className={`transition-all duration-300 z-50 w-full ${
+                scrolled
+                    ? "fixed top-0 bg-white/70 backdrop-blur-md shadow"
+                    : "absolute bg-transparent"
+            }`}
         >
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="flex h-16 items-center justify-between">
@@ -63,11 +96,12 @@ function Navbar() {
 
                     {/* Right */}
                     <div className="flex items-center gap-2">
-                        {isLoggedIn ? (
+                        {token ? (
                             <>
                                 <button className="p-1 rounded-full text-gray-400">
                                     <Bell className="size-6" />
                                 </button>
+
                                 <div className="relative">
                                     <button
                                         onClick={() => setProfileOpen(!profileOpen)}
@@ -79,22 +113,26 @@ function Navbar() {
                                             alt="User"
                                         />
                                     </button>
+
                                     {profileOpen && (
                                         <div className="absolute right-0 z-50 mt-2 w-48 rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5">
+                                            {/* Menu Dashboard hanya untuk admin/moderator */}
+                                            {(role === "admin" || role === "moderator") && (
+                                                <Link
+                                                    to="/dashboard"
+                                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                >
+                                                    Dashboard
+                                                </Link>
+                                            )}
                                             <Link
                                                 to="/profile"
                                                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                             >
                                                 Your Profile
                                             </Link>
-                                            <Link
-                                                to="/settings"
-                                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                            >
-                                                Settings
-                                            </Link>
                                             <button
-                                                onClick={() => setIsLoggedIn(false)}
+                                                onClick={handleLogout}
                                                 className="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                             >
                                                 Sign out
