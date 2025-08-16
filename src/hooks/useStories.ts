@@ -46,7 +46,7 @@ export const useApprovedStories = () =>
     useQuery<Story[], Error>({
         queryKey: ["stories-approved"],
         queryFn: async () => {
-            const { data } = await api.get("/stories?status=approved");
+            const { data } = await api.get("/stories/approved");
             return data.data;
         },
     });
@@ -88,7 +88,7 @@ export const useAddStory = (onSuccess?: () => void) => {
 
     return useMutation({
         mutationFn: async (formData: FormData) => {
-            const { data } = await api.post("/stories", formData, {
+            const { data } = await api.post("/stories/", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             return data;
