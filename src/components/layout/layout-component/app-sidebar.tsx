@@ -34,7 +34,7 @@ type NavItem = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     const [user, setUser] = React.useState<User | null>(null);
-    const [teams, setTeams] = React.useState<Team[]>([]);
+    // const [teams, setTeams] = React.useState<Team[]>([]);
     const [navMain, setNavMain] = React.useState<NavItem[]>([]);
 
     React.useEffect(() => {
@@ -46,12 +46,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
             // Set team default dari role/admin
             if (parsedUser.role === "admin" || parsedUser.role === "moderator") {
-                setTeams([
-                    {
-                        name: "Admin SWID",
-                        logo: GalleryVerticalEnd,
-                    },
-                ]);
+                // setTeams([
+                //     {
+                //         name: "Admin SWID",
+                //         logo: GalleryVerticalEnd,
+                //     },
+                // ]);
 
                 setNavMain([
                     {
@@ -71,7 +71,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 ]);
             } else {
                 // User biasa tidak perlu team & nav khusus
-                setTeams([]);
+                // setTeams([]);
                 setNavMain([]);
             }
         }

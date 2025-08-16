@@ -36,10 +36,10 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
 
             // Simpan token dan user info
             localStorage.setItem("token", res.token);
-            localStorage.setItem("user", JSON.stringify(res.data));
+            localStorage.setItem("user", JSON.stringify(res.user));
 
             // Redirect berdasarkan role
-            const role = res.data.role;
+            const role = res.user.role;
             if (role === "admin" || role === "moderator") {
                 navigate("/dashboard", { replace: true });
             } else {

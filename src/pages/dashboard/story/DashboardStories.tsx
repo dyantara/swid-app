@@ -1,14 +1,7 @@
-// src/pages/dashboard/DashboardStories.tsx
-import { useStories } from "@/hooks/useStories";
 import { Link } from "react-router-dom";
 import { StoriesDataTable } from "./StoriesDataTable";
 
 function DashboardStories() {
-    const { data: storyResponse, isLoading, isError, error } = useStories();
-    const stories = storyResponse?.data ?? [];
-
-    if (isLoading) return <p>Loading...</p>;
-    if (isError) return <p>Error: {error.message}</p>;
 
     return (
         <div className="p-6">
@@ -22,7 +15,7 @@ function DashboardStories() {
                 </Link>
             </div>
 
-            <StoriesDataTable stories={stories} />
+            <StoriesDataTable  />
         </div>
     );
 }

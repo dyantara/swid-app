@@ -167,11 +167,11 @@ const ActionsCell = ({ row }: { row: any }) => {
     );
 };
 
-const columns: ColumnDef<Story>[] = [
+const columns: ColumnDef<Story, any>[] = [
     {
         accessorKey: "title",
         header: "Judul",
-        cell: ({ row }) => <div className="font-medium text-gray-800">{row.getValue("title")}</div>,
+        cell: ({ row }) => <div>{row.getValue("title")}</div>,
     },
     {
         accessorKey: "category.name",
@@ -189,7 +189,7 @@ const columns: ColumnDef<Story>[] = [
                     : status === "rejected"
                       ? "text-red-600"
                       : "text-yellow-600";
-            return <span className={`font-medium ${color}`}>{status}</span>;
+            return <span className={color}>{status}</span>;
         },
     },
     {
@@ -203,6 +203,8 @@ const columns: ColumnDef<Story>[] = [
         cell: ({ row }) => <ActionsCell row={row} />,
     },
 ];
+
+
 
 export function StoriesDataTable() {
     const { data, isLoading, isError, error } = useStories();
