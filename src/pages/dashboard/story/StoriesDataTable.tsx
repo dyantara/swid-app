@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useStories } from "@/hooks/useStories";
+import { useStories, type Story } from "@/hooks/useStories";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import api from "@/lib/axios";
 import { Link } from "react-router-dom";
@@ -34,14 +34,7 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 
-type Story = {
-    _id: string;
-    title: string;
-    category?: { _id: string; name: string };
-    status: "pending" | "approved" | "rejected";
-    createdAt: string;
-};
-
+// ActionsCell tetap menggunakan row dari react-table
 const ActionsCell = ({ row }: { row: any }) => {
     const queryClient = useQueryClient();
     const [confirmType, setConfirmType] = React.useState<null | "delete" | "approve" | "reject">(
@@ -49,41 +42,27 @@ const ActionsCell = ({ row }: { row: any }) => {
     );
 
     const deleteMutation = useMutation({
-        mutationFn: async (id: string) => {
-            await api.delete(`/stories/${id}`);
-        },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["stories"] });
-        },
+        mutationFn: async (id: string) => await api.delete(`/stories/${id}`),
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: ["stories"] }),
     });
 
     const statusMutation = useMutation({
-        mutationFn: async ({ id, status }: { id: string; status: "approved" | "rejected" }) => {
-            console.log("PATCH request to:", `/stories/${id}/status`);
-            console.log("Payload:", { status });
-            const response = await api.patch(`/stories/${id}/status`, { status });
-            console.log("Response:", response.data);
-            return response.data;
-        },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["stories"] });
-        },
-        onError: (err: any) => {
-            console.error("Status mutation error:", err.response ?? err);
-        },
+        mutationFn: async ({ id, status }: { id: string; status: "approved" | "rejected" }) =>
+            (await api.patch(`/stories/${id}/status`, { status })).data,
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: ["stories"] }),
+        onError: (err: any) => console.error("Status mutation error:", err.response ?? err),
     });
 
     const handleConfirm = () => {
         const id = row.original._id;
-        if (confirmType === "delete") {
-            deleteMutation.mutate(id);
-        } else if (confirmType === "approve" || confirmType === "reject") {
+        if (confirmType === "delete") deleteMutation.mutate(id);
+        else if (confirmType === "approve" || confirmType === "reject") {
             statusMutation.mutate({
                 id,
                 status: confirmType === "approve" ? "approved" : "rejected",
             });
         }
-        setConfirmType(null); // tutup modal
+        setConfirmType(null);
     };
 
     return (
@@ -117,14 +96,13 @@ const ActionsCell = ({ row }: { row: any }) => {
                 <Button
                     variant="destructive"
                     size="sm"
-                    disabled={deleteMutation.isPending}
                     onClick={() => setConfirmType("delete")}
+                    disabled={deleteMutation.isPending}
                 >
                     {deleteMutation.isPending ? "Menghapus..." : "Hapus"}
                 </Button>
             </div>
 
-            {/* Modal Konfirmasi */}
             <Dialog open={!!confirmType} onOpenChange={() => setConfirmType(null)}>
                 <DialogContent>
                     <DialogHeader>
@@ -167,6 +145,7 @@ const ActionsCell = ({ row }: { row: any }) => {
     );
 };
 
+// Gunakan tipe Story dari hook
 const columns: ColumnDef<Story, any>[] = [
     {
         accessorKey: "title",
@@ -197,14 +176,8 @@ const columns: ColumnDef<Story, any>[] = [
         header: "Tanggal",
         cell: ({ row }) => new Date(row.getValue("createdAt")).toLocaleDateString("id-ID"),
     },
-    {
-        id: "actions",
-        header: "Aksi",
-        cell: ({ row }) => <ActionsCell row={row} />,
-    },
+    { id: "actions", header: "Aksi", cell: ({ row }) => <ActionsCell row={row} /> },
 ];
-
-
 
 export function StoriesDataTable() {
     const { data, isLoading, isError, error } = useStories();
@@ -229,18 +202,14 @@ export function StoriesDataTable() {
 
     return (
         <div className="space-y-4">
-            {/* 🔍 Search */}
-            <div>
-                <Input
-                    placeholder="Cari story..."
-                    value={globalFilter ?? ""}
-                    onChange={(e) => setGlobalFilter(e.target.value)}
-                    className="max-w-sm"
-                />
-            </div>
+            <Input
+                placeholder="Cari story..."
+                value={globalFilter ?? ""}
+                onChange={(e) => setGlobalFilter(e.target.value)}
+                className="max-w-sm"
+            />
 
             <div className="rounded-md border bg-white shadow">
-                {/* 📋 Table */}
                 <Table>
                     <TableHeader className="bg-gray-100">
                         {table.getHeaderGroups().map((headerGroup) => (
@@ -294,7 +263,6 @@ export function StoriesDataTable() {
                 </Table>
             </div>
 
-            {/* 📑 Pagination */}
             <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-600">
                     Halaman {table.getState().pagination.pageIndex + 1} dari {table.getPageCount()}

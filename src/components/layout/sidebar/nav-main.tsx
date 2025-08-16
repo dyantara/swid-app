@@ -1,4 +1,3 @@
-import * as React from "react";
 import { ChevronRight, type LucideIcon } from "lucide-react";
 import { useLocation, Link } from "react-router-dom";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";

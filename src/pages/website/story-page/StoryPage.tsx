@@ -63,9 +63,7 @@ function StoryPage() {
                     Bagikan pengalamanmu atau baca cerita dari pengguna lain. Cerita bisa anonim.
                 </p>
 
-                <AddStoryModal>
-                    <span className="animate-bounce">+</span> Tambah Cerita
-                </AddStoryModal>
+                <AddStoryModal />
             </div>
 
             {/* Search & Filter */}

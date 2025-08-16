@@ -1,5 +1,5 @@
 import * as React from "react";
-import { GalleryVerticalEnd, LayoutDashboard, BookText, ExternalLink } from "lucide-react";
+import { LayoutDashboard, BookText, ExternalLink } from "lucide-react";
 
 import { NavMain } from "@/components/layout/sidebar/nav-main";
 import { NavUser } from "@/components/layout/sidebar/nav-user";
@@ -19,11 +19,6 @@ type User = {
     role?: string;
 };
 
-type Team = {
-    name: string;
-    logo: any;
-    plan?: string;
-};
 
 type NavItem = {
     title: string;
