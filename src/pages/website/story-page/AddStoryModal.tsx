@@ -23,28 +23,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import api from "@/lib/axios";
-
-interface Category {
-    _id: string;
-    name: string;
-}
 
 export function AddStoryModal() {
     const [open, setOpen] = useState(false);
     const [confirmOpen, setConfirmOpen] = useState(false);
     const queryClient = useQueryClient();
-
-    // Fetch categories
-    const { data: categories, isLoading: categoriesLoading } = useQuery<Category[]>({
-        queryKey: ["categories"],
-        queryFn: async () => {
-            const { data } = await api.get("/categories");
-            return data.data;
-        },
-    });
 
     const mutation = useMutation({
         mutationFn: async (formData: FormData) => {

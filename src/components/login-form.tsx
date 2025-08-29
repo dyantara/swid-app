@@ -32,11 +32,11 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
 const onSubmit = async (data: LoginSchema) => {
     setServerError(null);
     try {
-        const res = await mutateAsync(data); // { success, message, data }
+        const res = await mutateAsync(data); // ✅ res: LoginResponse
 
         // ambil token & user dari response
-        const token = res.data.token;
-        const user = res.data.user;
+        const token = res.token;
+        const user = res.user;
 
         // simpan ke localStorage
         localStorage.setItem("token", token);
@@ -55,6 +55,7 @@ const onSubmit = async (data: LoginSchema) => {
         setServerError(err.message || "Login gagal");
     }
 };
+
 
 
     return (
