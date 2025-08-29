@@ -21,12 +21,13 @@ type LoginResponse = {
 export const useLogin = () => {
     return useMutation<LoginResponse, Error, LoginPayload>({
         mutationFn: async (payload) => {
-            const { data } = await api.post("/users/login", payload);
-            return data;
-        },
-        onError: (error: any) => {
-            // lempar message custom
-            throw new Error(error.response?.data?.message || "Terjadi kesalahan di server");
+            try {
+                const { data } = await api.post("/users/login", payload);
+                return data;
+            } catch (err: any) {
+                // ✅ lempar custom error supaya bisa ditangkap React Query
+                throw new Error(err.response?.data?.message || "Terjadi kesalahan di server");
+            }
         },
     });
 };

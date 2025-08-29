@@ -7,6 +7,15 @@ export interface Category {
     name: string;
 }
 
+export interface CategoriesResponse {
+    status: string;
+    message: string;
+    data: {
+        count: number;
+        categories: Category[];
+    };
+}
+
 export interface Story {
     _id: string;
     title: string;
@@ -72,15 +81,6 @@ export const useUpdateStoryStatus = () => {
     });
 };
 
-// --- CATEGORIES ---
-export const useCategories = () =>
-    useQuery<Category[], Error>({
-        queryKey: ["categories"],
-        queryFn: async () => {
-            const { data } = await api.get("/categories");
-            return data.data; // response { message, count, data }
-        },
-    });
 
 // --- ADD STORY MUTATION ---
 export const useAddStory = (onSuccess?: () => void) => {

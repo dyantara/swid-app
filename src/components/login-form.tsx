@@ -29,26 +29,34 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"div">) 
     const { mutateAsync, isPending } = useLogin();
     const [serverError, setServerError] = useState<string | null>(null);
 
-    const onSubmit = async (data: LoginSchema) => {
-        setServerError(null);
-        try {
-            const res = await mutateAsync(data); // res: { success, message, token, data }
+const onSubmit = async (data: LoginSchema) => {
+    setServerError(null);
+    try {
+        const res = await mutateAsync(data); // ✅ res: LoginResponse
 
-            // Simpan token dan user info
-            localStorage.setItem("token", res.token);
-            localStorage.setItem("user", JSON.stringify(res.user));
+        // ambil token & user dari response
+        const token = res.token;
+        const user = res.user;
 
-            // Redirect berdasarkan role
-            const role = res.user.role;
-            if (role === "admin" || role === "moderator") {
-                navigate("/dashboard", { replace: true });
-            } else {
-                navigate("/", { replace: true });
-            }
-        } catch (err: any) {
-            setServerError(err.message || "Login gagal");
+        // simpan ke localStorage
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(user));
+
+        // cek role
+        const role = user?.role;
+        console.log("Role:", role);
+
+        if (role === "admin" || role === "moderator") {
+            navigate("/dashboard", { replace: true });
+        } else {
+            navigate("/", { replace: true });
         }
-    };
+    } catch (err: any) {
+        setServerError(err.message || "Login gagal");
+    }
+};
+
+
 
     return (
         <div className={cn("flex flex-col gap-6", className)} {...props}>
