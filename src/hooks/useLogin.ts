@@ -9,14 +9,17 @@ type LoginPayload = {
 type LoginResponse = {
     success: boolean;
     message: string;
-    token: string;
-    user: {
-        _id: string;
-        name: string;
-        email: string;
-        role: string;
+    data: {
+        token: string;
+        user: {
+            _id: string;
+            name: string;
+            email: string;
+            role: string;
+        };
     };
 };
+
 
 export const useLogin = () => {
     return useMutation<LoginResponse, Error, LoginPayload>({
