@@ -35,8 +35,9 @@ const onSubmit = async (data: LoginSchema) => {
         const res = await mutateAsync(data); // ✅ res: LoginResponse
 
         // ambil token & user dari response
-        const token = res.token;
-        const user = res.user;
+        const token = res.data.token;
+        const user = res.data.user;
+
 
         // simpan ke localStorage
         localStorage.setItem("token", token);
