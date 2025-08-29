@@ -103,7 +103,7 @@ export function AddStoryModal() {
                             <Textarea id="content" name="content" rows={5} required />
                         </div>
 
-                        <div>
+                        {/* <div>
                             <Label htmlFor="category">Kategori</Label>
                             {categoriesLoading ? (
                                 <p>Loading kategori...</p>
@@ -122,7 +122,7 @@ export function AddStoryModal() {
                                     ))}
                                 </select>
                             )}
-                        </div>
+                        </div> */}
 
                         <div>
                             <Label htmlFor="file">Gambar</Label>
