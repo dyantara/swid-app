@@ -109,7 +109,7 @@ function StoryPage() {
                 <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
                     {paginatedStories.length > 0 ? (
                         paginatedStories.map((story) => (
-                            <Link to={`/story/detail/${story._id}`} key={story._id}>
+                            <Link to={`/story/detail/${story.slug}`} key={story._id}>
                                 <Card className="hover:shadow-lg transition-shadow rounded-xl overflow-hidden flex flex-col h-full">
                                     {story.image && (
                                         <div className="w-full h-48 flex-shrink-0 px-4">
