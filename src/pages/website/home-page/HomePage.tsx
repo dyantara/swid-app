@@ -1,15 +1,37 @@
 import { useApprovedStories } from "@/hooks/useStories";
+import { useArticles, type Article } from "@/hooks/useArticles";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "react-router-dom";
+import DOMPurify from "dompurify";
+
+// ✅ Helper buat strip tag HTML
+const stripHtml = (html: string) => {
+    const tmp = document.createElement("div");
+    tmp.innerHTML = DOMPurify.sanitize(html);
+    return tmp.textContent || tmp.innerText || "";
+};
 
 function HomePage() {
-    const { data: stories } = useApprovedStories();
+    const { data: stories, isLoading: isLoadingStories } = useApprovedStories();
+    const { data: articlesData, isLoading: isLoadingArticles } = useArticles();
 
+    const articles: Article[] = Array.isArray(articlesData) ? articlesData : [];
+
+    // ✅ Filter hanya published
+    const publishedArticle = articles.filter((a) => a.status === "published");
+
+    // fungsi bantu truncate kata
+    const truncateWords = (text: string, wordCount: number) => {
+        const words = text.split(" ");
+        if (words.length <= wordCount) return text;
+        return words.slice(0, wordCount).join(" ") + " ...";
+    };
 
     return (
-        <div className="container mx-auto space-y-4">
+        <div className="space-y-8">
             <section
                 id="home"
-                className="flex flex-col md:flex-row items-center justify-between  p-8 gap-8"
+                className="flex flex-col md:flex-row items-center justify-between gap-8"
             >
                 {/* Gambar */}
                 <div className="w-full md:w-1/2 mb-6 md:mb-0">
@@ -34,7 +56,7 @@ function HomePage() {
                     </a>
                 </div>
             </section>
-            <section id="story" className=" p-8 rounded-xl">
+            <section id="story" className="rounded-xl">
                 {/* Header dengan garis */}
                 <div className="flex items-center mb-6">
                     <h1 className="text-2xl font-bold text-primary-0 mr-4">Cerita Sahabat</h1>
@@ -60,49 +82,56 @@ function HomePage() {
 
                     {/* Scrollable Cards */}
                     <div className="flex gap-4 overflow-x-auto p-4">
-                        {stories
-                            ?.sort(
-                                (a, b) =>
-                                    new Date(b.createdAt).getTime() -
-                                    new Date(a.createdAt).getTime()
-                            ) // urut terbaru
-                            .slice(0, 12) // ambil 12 pertama
-                            .map((story) => (
-                                <div
-                                    key={story._id}
-                                    className="min-w-[280px] max-w-[280px] bg-white rounded-lg shadow p-4 flex-shrink-0 overflow-hidden"
-                                >
-                                    <div className="h-40 bg-gray-200 rounded mb-4 overflow-hidden">
-                                        <img
-                                            src={story.image}
-                                            alt={story.title}
-                                            className="w-full h-full object-cover"
-                                        />
-                                    </div>
-                                    <h2 className="text-md font-semibold text-blue-800 mb-2 line-clamp-2">
-                                        {story.title}
-                                    </h2>
-                                    <p className="text-gray-600 text-sm mb-3 line-clamp-3">
-                                        {story.content}
-                                    </p>
-                                    <Link
-                                        to={`/story/${story._id}`}
-                                        className="text-blue-600 text-sm font-medium hover:underline"
-                                    >
-                                        Baca Selengkapnya →
-                                    </Link>
-                                </div>
-                            ))}
+                        {!isLoadingStories && stories?.length === 0 && (
+                            <p className="flex text-gray-500 text-center py-6 items-center  ">
+                                Belum ada cerita tersedia. Yuk, bagikan ceritamu!
+                            </p>
+                        )}
+                        {isLoadingStories
+                            ? Array.from({ length: 3 }).map((_, idx) => (
+                                  <Skeleton key={idx} className="w-72 h-64 rounded-lg" />
+                              ))
+                            : stories
+                                  ?.sort(
+                                      (a, b) =>
+                                          new Date(b.createdAt).getTime() -
+                                          new Date(a.createdAt).getTime()
+                                  )
+                                  .slice(0, 12)
+                                  .map((story) => (
+                                      <div
+                                          key={story._id}
+                                          className="min-w-[280px] max-w-[280px] bg-white rounded-lg shadow p-4 flex-shrink-0 overflow-hidden hover:shadow-lg transition-shadow duration-300 "
+                                      >
+                                          <div className="h-40 bg-gray-200 rounded mb-4 overflow-hidden">
+                                              <img
+                                                  src={story.image}
+                                                  alt={story.title}
+                                                  className="w-full h-full object-cover"
+                                              />
+                                          </div>
+                                          <h2 className="text-md font-semibold text-blue-800 mb-2 line-clamp-2">
+                                              {story.title}
+                                          </h2>
+                                          <p className="text-gray-600 text-sm mb-3 text-justify">
+                                              {truncateWords(story.content, 24)}
+                                          </p>
+                                          <Link
+                                              to={`/story/detail/${story.slug}`}
+                                              className="text-blue-600 text-sm font-medium hover:underline"
+                                          >
+                                              Baca Selengkapnya →
+                                          </Link>
+                                      </div>
+                                  ))}
                     </div>
                 </div>
             </section>
-            <section id="articles" className="">
-                <div className="p-8 ">
+            <section id="news" className="">
+                <div className=" ">
                     <div className="flex justify-between items-center mb-8">
                         <div>
-                            <h2 className="text-4xl font-bold text-primary-0 ">
-                                Artikel & Insight
-                            </h2>
+                            <h2 className="text-4xl font-bold text-primary-0 ">News & Insight</h2>
                             <p className="text-gray-600">
                                 Temukan wawasan baru tentang kesehatan mental, self-care, dan
                                 kehidupan.
@@ -111,57 +140,55 @@ function HomePage() {
 
                         <div className="">
                             <a
-                                href="/artikel"
+                                href="/news"
                                 className="px-6 py-3 bg-primary-0 text-white rounded-lg shadow hover:bg-primary-1 transition-colors"
                             >
-                                Lihat Semua Artikel
+                                Lihat Semua berita
                             </a>
                         </div>
                     </div>
 
                     <div className="flex gap-4 overflow-x-auto flex-nowrap no-scrollbar pb-8">
-                        {[
-                            {
-                                title: "Mengenal Emosi: Kenapa Kita Perlu Merasakannya?",
-                                desc: "Emosi bukan musuhmu. Kenali mereka agar kamu bisa berdamai dengan dirimu sendiri.",
-                            },
-                            {
-                                title: "5 Cara Self-Care Saat Lagi Burnout",
-                                desc: "Burnout itu nyata. Tapi kamu bisa belajar menenangkan diri dengan langkah kecil.",
-                            },
-                            {
-                                title: "Mengapa Cerita Itu Menyembuhkan?",
-                                desc: "Berbagi cerita bukan hanya menolong orang lain, tapi juga menyembuhkan dirimu.",
-                            },
-                            {
-                                title: "Tips Mengelola Stres Sehari-hari",
-                                desc: "Stres itu wajar, tapi kamu bisa mengelolanya agar tetap produktif dan tenang.",
-                            },
-                            {
-                                title: "Belajar Memahami Diri Sendiri",
-                                desc: "Pahami dirimu agar kamu bisa mengambil keputusan yang lebih baik dalam hidup.",
-                            },
-                            {
-                                title: "Menemukan Arti Hidup",
-                                desc: "Kadang hidup terasa kosong, tapi ada cara untuk menemukan maknanya lagi.",
-                            },
-                        ].map((article, index) => (
-                            <div
-                                key={index}
-                                className="bg-white rounded-xl shadow p-4 text-left hover:shadow-lg transition-shadow duration-300 min-w-[300px] max-w-[300px]"
-                            >
-                                <div className="h-40 bg-gray-200 rounded mb-4"></div>
-                                <h3 className="text-lg font-semibold">{article.title}</h3>
-                                <p className="text-gray-600 text-sm my-2">{article.desc}</p>
-                                <button className="text-primary-0 font-semibold mt-2">
-                                    Baca Selengkapnya →
-                                </button>
-                            </div>
-                        ))}
+                        {!isLoadingArticles && articles?.length === 0 && (
+                            <p className="w-full text-gray-500 text-center py-24 ">
+                                Artikel masih kosong. Nantikan update berikutnya!
+                            </p>
+                        )}
+
+                        {isLoadingArticles
+                            ? Array.from({ length: 3 }).map((_, idx) => (
+                                  <Skeleton key={idx} className="w-72 h-64 rounded-lg" />
+                              ))
+                            : publishedArticle?.slice(0, 12).map((article: Article) => (
+                                  <div
+                                      key={article._id}
+                                      className="bg-white rounded-xl shadow p-4 text-left hover:shadow-lg transition-shadow duration-300 min-w-[300px] max-w-[300px]"
+                                  >
+                                      <div className="h-40 bg-gray-200 rounded mb-4">
+                                          {article.thumbnail && (
+                                              <img
+                                                  src={article.thumbnail}
+                                                  alt={article.title}
+                                                  className="w-full h-full object-cover rounded-md"
+                                              />
+                                          )}
+                                      </div>
+                                      <h3 className="text-lg font-semibold">{article.title}</h3>
+                                      <p className="text-gray-600 text-sm my-2 text-justify">
+                                          {truncateWords(stripHtml(article.content), 24)}
+                                      </p>
+                                      <Link
+                                          to={`/news/detail/${article.slug}`}
+                                          className="text-blue-600 text-sm font-medium hover:underline"
+                                      >
+                                          Baca Selengkapnya →
+                                      </Link>
+                                  </div>
+                              ))}
                     </div>
                 </div>
             </section>
-            <section id="features" className="bg-gray-50 py-16 px-8 mx-8 rounded-lg">
+            <section id="features" className="bg-gray-50 py-16  rounded-lg">
                 <div className="max-w-7xl mx-auto text-center">
                     <h2 className="text-4xl font-bold text-primary-0 mb-10">
                         Apa yang Bisa Kamu Lakukan di SWID?

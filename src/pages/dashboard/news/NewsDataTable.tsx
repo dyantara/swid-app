@@ -20,8 +20,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useStories, type Story } from "@/hooks/useStories";
-import { useCategories, type Category } from "@/hooks/useCategories"; // ✅ ambil kategori dari API
+import { useCategories, type Category } from "@/hooks/useCategories";
 import { ArrowUp, ArrowDown, ArrowUpDown } from "lucide-react";
 import {
     Select,
@@ -30,10 +29,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-
-// ✅ missing import
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import api from "@/lib/axios";
+import { useDeleteArticle, useArticles, type Article } from "@/hooks/useArticles";
 import {
     Dialog,
     DialogContent,
@@ -42,80 +38,65 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
+import { useNavigate } from "react-router-dom";
 
+
+// ============ Actions Cell ============
 const ActionsCell = ({ row }: { row: any }) => {
-    const queryClient = useQueryClient();
-    const [confirmType, setConfirmType] = React.useState<null | "approve" | "reject">(null);
+    const navigate = useNavigate();
 
-    const statusMutation = useMutation({
-        mutationFn: async ({ id, status }: { id: string; status: "approved" | "rejected" }) =>
-            (await api.patch(`/stories/${id}/status`, { status })).data,
-        onSuccess: () => queryClient.invalidateQueries({ queryKey: ["stories"] }),
-        onError: (err: any) => console.error("Status mutation error:", err.response ?? err),
-    });
+    const deleteArticle = useDeleteArticle();
+    const [openDelete, setOpenDelete] = React.useState(false);
 
-    const handleConfirm = () => {
+    const handleDelete = () => {
         const id = row.original._id;
-        if (confirmType) {
-            statusMutation.mutate({
-                id,
-                status: confirmType === "approve" ? "approved" : "rejected",
-            });
-        }
-        setConfirmType(null);
+        deleteArticle.mutate(id, {
+            onSuccess: () => setOpenDelete(false),
+        });
     };
 
     return (
         <>
             <div className="flex gap-2">
-                {row.original.status === "pending" && (
-                    <>
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => setConfirmType("approve")}
-                            disabled={statusMutation.isPending}
-                        >
-                            Approve
-                        </Button>
-                        <Button
-                            variant="destructive"
-                            size="sm"
-                            onClick={() => setConfirmType("reject")}
-                            disabled={statusMutation.isPending}
-                        >
-                            Reject
-                        </Button>
-                    </>
-                )}
+                {/* ✅ Tombol Edit */}
+                <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => navigate(`/dashboard/news/edit/${row.original.slug}`)}
+                >
+                    Edit
+                </Button>
+
+                {/* ✅ Tombol Delete */}
+                <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => setOpenDelete(true)}
+                    disabled={deleteArticle.isPending}
+                >
+                    Delete
+                </Button>
             </div>
 
-            <Dialog open={!!confirmType} onOpenChange={() => setConfirmType(null)}>
+            {/* Konfirmasi Delete */}
+            <Dialog open={openDelete} onOpenChange={setOpenDelete}>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>
-                            {confirmType === "approve" ? "Approve Story?" : "Reject Story?"}
-                        </DialogTitle>
+                        <DialogTitle>Hapus Artikel?</DialogTitle>
                         <DialogDescription>
-                            {confirmType === "approve"
-                                ? "Apakah kamu yakin ingin menyetujui story ini?"
-                                : "Apakah kamu yakin ingin menolak story ini?"}
+                            Artikel ini akan dihapus permanen. Yakin lanjut?
                         </DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
-                        <Button variant="outline" onClick={() => setConfirmType(null)}>
+                        <Button variant="outline" onClick={() => setOpenDelete(false)}>
                             Batal
                         </Button>
                         <Button
-                            variant={confirmType === "reject" ? "destructive" : "default"}
-                            onClick={handleConfirm}
-                            disabled={statusMutation.isPending}
+                            variant="destructive"
+                            onClick={handleDelete}
+                            disabled={deleteArticle.isPending}
                         >
-                            {statusMutation.isPending
-                                ? "Memproses..."
-                                : confirmType === "approve"
-                                  ? "Approve"
-                                  : "Reject"}
+                            {deleteArticle.isPending ? "Menghapus..." : "Hapus"}
                         </Button>
                     </DialogFooter>
                 </DialogContent>
@@ -125,7 +106,7 @@ const ActionsCell = ({ row }: { row: any }) => {
 };
 
 // ============ Columns ============
-const columns: ColumnDef<Story, any>[] = [
+const columns: ColumnDef<Article, any>[] = [
     {
         accessorKey: "title",
         header: "Judul",
@@ -142,11 +123,11 @@ const columns: ColumnDef<Story, any>[] = [
         cell: ({ row }) => {
             const status = row.getValue("status") as string;
             const color =
-                status === "approved"
+                status === "published"
                     ? "text-green-600"
-                    : status === "rejected"
-                      ? "text-red-600"
-                      : "text-yellow-600";
+                    : status === "draft"
+                      ? "text-yellow-600"
+                      : "text-gray-500";
             return <span className={color}>{status}</span>;
         },
     },
@@ -159,30 +140,30 @@ const columns: ColumnDef<Story, any>[] = [
 ];
 
 // ============ Table Component ============
-export function StoriesDataTable() {
-    const { data, isLoading, isError, error } = useStories();
-    const { data: categories, isLoading: catLoading } = useCategories(); // ✅ ambil dari API
+export function NewsDataTable() {
+    const { data, isLoading, isError, error } = useArticles();
+    const { data: categories, isLoading: catLoading } = useCategories();
 
-    const stories = data?.data ?? [];
+    const articles = data ?? [];
 
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [searchQuery, setSearchQuery] = React.useState("");
     const [categoryFilter, setCategoryFilter] = React.useState<string>("all");
 
-    // Filter data berdasarkan title & category
-    const filteredStories = React.useMemo(() => {
-        return stories.filter((story: Story) => {
-            const matchTitle = story.title.toLowerCase().includes(searchQuery.toLowerCase());
+    // ✅ Filter artikel berdasarkan title & category
+    const filteredArticles = React.useMemo(() => {
+        return articles.filter((article: Article) => {
+            const matchTitle = article.title.toLowerCase().includes(searchQuery.toLowerCase());
 
             const matchCategory =
-                categoryFilter === "all" || story.category?._id === categoryFilter;
+                categoryFilter === "all" || article.category?._id === categoryFilter;
 
             return matchTitle && matchCategory;
         });
-    }, [stories, searchQuery, categoryFilter]);
+    }, [articles, searchQuery, categoryFilter]);
 
     const table = useReactTable({
-        data: filteredStories,
+        data: filteredArticles,
         columns,
         state: { sorting },
         onSortingChange: setSorting,
@@ -199,7 +180,7 @@ export function StoriesDataTable() {
             {/* Search & Filter */}
             <div className="flex flex-col sm:flex-row gap-4">
                 <Input
-                    placeholder="Cari story berdasarkan judul..."
+                    placeholder="Cari berita berdasarkan judul..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="max-w-sm"
@@ -267,7 +248,7 @@ export function StoriesDataTable() {
                         ) : (
                             <TableRow>
                                 <TableCell colSpan={columns.length} className="text-center py-6">
-                                    Tidak ada story
+                                    Tidak ada berita
                                 </TableCell>
                             </TableRow>
                         )}

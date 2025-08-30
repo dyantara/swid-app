@@ -27,6 +27,7 @@ export interface Story {
     approvedAt?: string;
     isAnonymous: boolean;
     email?: string;
+    slug: string;
     submittedBy?: {
         _id: string;
         name: string;
@@ -60,14 +61,14 @@ export const useApprovedStories = () =>
         },
     });
 
-export const useStory = (id: string) =>
+export const useStory = (slug: string) =>
     useQuery<Story, Error>({
-        queryKey: ["story", id],
+        queryKey: ["story", slug],
         queryFn: async () => {
-            const { data } = await api.get(`/stories/${id}`);
+            const { data } = await api.get(`/stories/${slug}`);
             return data.data;
         },
-        enabled: !!id,
+        enabled: !!slug,
     });
 
 export const useUpdateStoryStatus = () => {

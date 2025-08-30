@@ -25,12 +25,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { useCategories, type Category } from "@/hooks/useCategories"; // ✅ ambil kategori dari API
 import api from "@/lib/axios";
 
 export function AddStoryModal() {
     const [open, setOpen] = useState(false);
     const [confirmOpen, setConfirmOpen] = useState(false);
     const queryClient = useQueryClient();
+    const { data: categories, isLoading: catLoading } = useCategories();
 
     const mutation = useMutation({
         mutationFn: async (formData: FormData) => {
@@ -89,9 +91,9 @@ export function AddStoryModal() {
                             <Textarea id="content" name="content" rows={5} required />
                         </div>
 
-                        {/* <div>
+                        <div>
                             <Label htmlFor="category">Kategori</Label>
-                            {categoriesLoading ? (
+                            {catLoading ? (
                                 <p>Loading kategori...</p>
                             ) : (
                                 <select
@@ -108,7 +110,7 @@ export function AddStoryModal() {
                                     ))}
                                 </select>
                             )}
-                        </div> */}
+                        </div>
 
                         <div>
                             <Label htmlFor="file">Gambar</Label>
