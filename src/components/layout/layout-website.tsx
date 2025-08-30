@@ -4,11 +4,12 @@ import Footer from "./layout-component/footer";
 
 function LayoutWebsite() {
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col min-h-screen">
             <Navbar />
-            <div className="flex flex-1 flex-col gap-4 pt-0 mt-10 mb-10 p-8">
+            {/* Wrapper konten */}
+            <main className="flex-1 container mt-8 mx-auto px-8 md:px-16 py-12">
                 <Outlet />
-            </div>
+            </main>
             <Footer />
         </div>
     );

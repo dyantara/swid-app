@@ -5,6 +5,8 @@ import HomePage from "@/pages/website/home-page/HomePage";
 import type { RouteObject } from "react-router-dom";
 import NewsPage from "@/pages/website/news-page/NewsPage";
 import StoryPage from "@/pages/website/story-page/StoryPage";
+import StoryDetailPage from "@/pages/website/story-page/StoryDetailPage";
+import NewsDetailPage from "@/pages/website/news-page/NewsDetailPage";
 
 
 export const webRoutes: RouteObject = {
@@ -24,11 +26,23 @@ export const webRoutes: RouteObject = {
             element: <StoryPage />,
         },
         {
+            path: "story/detail/:slug",
+            element: <StoryDetailPage />,
+        },
+        {
             path: "news",
             element: <NewsPage />,
         },
         {
+            path: "news/detail/:slug",
+            element: <NewsDetailPage />,
+        },
+        {
             path: "contact-us",
+            element: <ComingSoon />,
+        },
+        {
+            path: "profile",
             element: <ComingSoon />,
         },
     ],

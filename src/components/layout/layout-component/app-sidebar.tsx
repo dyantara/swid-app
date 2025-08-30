@@ -56,13 +56,23 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     },
                     {
                         title: "Story",
-                        url: "#",
+                        url: "/dashboard/story",
                         icon: BookText,
-                        items: [
-                            { title: "Story Data", url: "/dashboard/story" },
-                            { title: "Story Category", url: "/dashboard/story-category" },
-                        ],
                     },
+                    {
+                        title: "News",
+                        url: "/dashboard/news",
+                        icon: LayoutDashboard,
+                    },
+                    // {
+                    //     title: "Story",
+                    //     url: "#",
+                    //     icon: BookText,
+                    //     items: [
+                    //         { title: "Story Data", url: "/dashboard/story" },
+                    //         { title: "Story Category", url: "/dashboard/story-category" },
+                    //     ],
+                    // },
                 ]);
             } else {
                 // User biasa tidak perlu team & nav khusus
