@@ -1,5 +1,5 @@
 "use client";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { Loader2, ArrowLeft } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -8,7 +8,6 @@ import { useStory } from "@/hooks/useStories";
 
 function StoryDetailPage() {
     const { slug } = useParams<{ slug: string }>();
-    const navigate = useNavigate();
 
     const { data: story, isLoading, isError, error } = useStory(slug ?? "");
 

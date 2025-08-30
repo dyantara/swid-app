@@ -25,7 +25,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { useCategories, type Category } from "@/hooks/useCategories"; // ✅ ambil kategori dari API
+import { useCategories } from "@/hooks/useCategories";
 import api from "@/lib/axios";
 
 export function AddStoryModal() {
