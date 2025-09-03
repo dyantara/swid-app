@@ -31,26 +31,26 @@ export default function EditNewsPage() {
     const [content, setContent] = useState("");
     const [category, setCategory] = useState<string>("");
     const [tags, setTags] = useState<string>("");
-    const [thumbnail, setThumbnail] = useState<File | null>(null);
+    const [thumbnail, setThumbnail] = useState<File | string | null>(null);
 
     const [isSavingDraft, setIsSavingDraft] = useState(false);
     const [isPublishing, setIsPublishing] = useState(false);
 
     useEffect(() => {
-        if (article && categories?.length) {
-            setTitle(article.title);
-            setContent(article.content);
+        if (article) {
+            setTitle(article.title ?? "");
+            setContent(article.content ?? "");
             setTags(article.tags?.join(", ") ?? "");
+            setThumbnail(article.thumbnail ?? article.thumbnail ?? null);
 
-            // set category hanya kalau ada di categories
-            const catExists = categories.find((cat) => cat._id === article.category?._id);
-            if (catExists) {
-                setCategory(catExists._id);
+            if (article?.category?._id) {
+                setCategory(article.category._id);
             }
         }
     }, [article, categories]);
 
     if (isLoadingArticle) return <p>Loading...</p>;
+    if (!article) return <p>Artikel tidak ditemukan</p>;
 
     const handleSubmit = (status: "draft" | "published") => {
         if (!article) return;
@@ -69,7 +69,14 @@ export default function EditNewsPage() {
             formData.append("tags", JSON.stringify(tagsArray));
         }
 
-        if (thumbnail) formData.append("thumbnail", thumbnail);
+        // ✅ Bedakan antara thumbnail lama (string URL) & baru (File)
+        if (thumbnail) {
+            if (typeof thumbnail === "string") {
+                formData.append("thumbnailUrl", thumbnail);
+            } else {
+                formData.append("thumbnail", thumbnail);
+            }
+        }
 
         updateArticleMutation.mutate(
             { id: article._id, formData },
@@ -92,9 +99,6 @@ export default function EditNewsPage() {
             }
         );
     };
-
-    if (isLoadingArticle) return <p>Loading...</p>;
-    if (!article) return <p>Artikel tidak ditemukan</p>;
 
     return (
         <div className="px-8">
@@ -124,14 +128,15 @@ export default function EditNewsPage() {
                     </div>
 
                     {/* Konten */}
-                    <div>
+                    <div className="text-gray-950">
                         <label className="block text-sm font-medium mb-1">Konten</label>
                         <ReactQuill
-                            key={article._id} // biar reload konten saat article berubah
+                            key={article._id}
                             value={content}
                             onChange={setContent}
                             placeholder="Tulis isi berita..."
                             theme="snow"
+                            className="bg-white text-black"
                         />
                     </div>
 
@@ -140,20 +145,18 @@ export default function EditNewsPage() {
                         {/* Kategori */}
                         <div>
                             <label className="block text-sm font-medium mb-1">Kategori</label>
-                            {categories && categories.length > 0 && (
-                                <Select value={category} onValueChange={setCategory}>
-                                    <SelectTrigger className="w-full">
-                                        <SelectValue placeholder="Pilih kategori" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {categories.map((cat) => (
-                                            <SelectItem key={cat._id} value={cat._id}>
-                                                {cat.name}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                            )}
+                            <Select value={category} onValueChange={setCategory}>
+                                <SelectTrigger className="w-full">
+                                    <SelectValue placeholder="Pilih kategori" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {categories?.map((cat) => (
+                                        <SelectItem key={cat._id} value={cat._id}>
+                                            {cat.name}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
                         </div>
 
                         {/* Tags */}
@@ -169,12 +172,14 @@ export default function EditNewsPage() {
 
                         {/* Thumbnail */}
                         <div>
-                            {article.thumbnail && !thumbnail && (
-                                <img
-                                    src={article.thumbnail}
-                                    alt="Thumbnail"
-                                    className="mb-2 w-40 h-24 object-cover rounded"
-                                />
+                            {thumbnail && typeof thumbnail === "string" && (
+                                <div className="w-full h-48 flex-shrink-0 mb-2">
+                                    <img
+                                        src={thumbnail}
+                                        alt={title}
+                                        className="w-full h-full object-cover rounded-md"
+                                    />
+                                </div>
                             )}
                             <div>
                                 <label className="block text-sm font-medium mb-1">Thumbnail</label>
