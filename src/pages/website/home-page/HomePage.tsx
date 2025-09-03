@@ -149,42 +149,45 @@ function HomePage() {
                     </div>
 
                     <div className="flex gap-4 overflow-x-auto flex-nowrap no-scrollbar pb-8">
-                        {!isLoadingArticles && articles?.length === 0 && (
-                            <p className="w-full text-gray-500 text-center py-24 ">
-                                Artikel masih kosong. Nantikan update berikutnya!
+                        {isLoadingArticles ? (
+                            // ✅ Kondisi loading → tampil skeleton
+                            Array.from({ length: 3 }).map((_, idx) => (
+                                <Skeleton key={idx} className="w-72 h-64 rounded-lg" />
+                            ))
+                        ) : publishedArticle && publishedArticle.length > 0 ? (
+                            // ✅ Kondisi ada artikel → render list
+                            publishedArticle.slice(0, 12).map((article: Article) => (
+                                <div
+                                    key={article._id}
+                                    className="bg-white rounded-xl shadow p-4 text-left hover:shadow-lg transition-shadow duration-300 min-w-[300px] max-w-[300px]"
+                                >
+                                    <div className="h-40 bg-gray-200 rounded mb-4">
+                                        {article.thumbnail && (
+                                            <img
+                                                src={article.thumbnail}
+                                                alt={article.title}
+                                                className="w-full h-full object-cover rounded-md"
+                                            />
+                                        )}
+                                    </div>
+                                    <h3 className="text-lg font-semibold">{article.title}</h3>
+                                    <p className="text-gray-600 text-sm my-2 text-justify">
+                                        {truncateWords(stripHtml(article.content), 24)}
+                                    </p>
+                                    <Link
+                                        to={`/news/detail/${article.slug}`}
+                                        className="text-blue-600 text-sm font-medium hover:underline"
+                                    >
+                                        Baca Selengkapnya →
+                                    </Link>
+                                </div>
+                            ))
+                        ) : (
+                            // ✅ Kondisi tidak ada artikel
+                            <p className="col-span-full text-center text-gray-500 py-10">
+                                Belum ada berita.
                             </p>
                         )}
-
-                        {isLoadingArticles
-                            ? Array.from({ length: 3 }).map((_, idx) => (
-                                  <Skeleton key={idx} className="w-72 h-64 rounded-lg" />
-                              ))
-                            : publishedArticle?.slice(0, 12).map((article: Article) => (
-                                  <div
-                                      key={article._id}
-                                      className="bg-white rounded-xl shadow p-4 text-left hover:shadow-lg transition-shadow duration-300 min-w-[300px] max-w-[300px]"
-                                  >
-                                      <div className="h-40 bg-gray-200 rounded mb-4">
-                                          {article.thumbnail && (
-                                              <img
-                                                  src={article.thumbnail}
-                                                  alt={article.title}
-                                                  className="w-full h-full object-cover rounded-md"
-                                              />
-                                          )}
-                                      </div>
-                                      <h3 className="text-lg font-semibold">{article.title}</h3>
-                                      <p className="text-gray-600 text-sm my-2 text-justify">
-                                          {truncateWords(stripHtml(article.content), 24)}
-                                      </p>
-                                      <Link
-                                          to={`/news/detail/${article.slug}`}
-                                          className="text-blue-600 text-sm font-medium hover:underline"
-                                      >
-                                          Baca Selengkapnya →
-                                      </Link>
-                                  </div>
-                              ))}
                     </div>
                 </div>
             </section>
